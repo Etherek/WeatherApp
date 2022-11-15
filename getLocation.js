@@ -1,6 +1,6 @@
-import {View, StyleSheet, Button, Alert, Text, SafeAreaView, ActivityIndicator, Image} from 'react-native'
+import {View, Alert, Text, Image} from 'react-native'
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location' 
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 const apiKey = 'fd084915b60c86f45f8b8fd3eb523290';

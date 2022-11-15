@@ -1,5 +1,5 @@
-import { Alert, Button, StyleSheet, Text, TextInput, View , Image} from 'react-native';
-import {useRef, useState} from 'react'
+import { Alert, Button, Text, TextInput, View , Image} from 'react-native';
+import {useState} from 'react'
 
 
 

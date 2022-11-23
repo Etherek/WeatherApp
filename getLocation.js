@@ -1,4 +1,4 @@
-import {View, Alert, Text, Image} from 'react-native'
+import {View, Alert, Text, Image, TextInput, Button} from 'react-native'
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location' 
 import {useState} from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -24,7 +24,24 @@ function LocationPicker(){
   const sunsetHours = sunsetDate.getHours();
   const sunsetMinutes = "0" + sunsetDate.getMinutes();
   const sunsetTime = sunsetHours + ':' + sunsetMinutes;
-  async function getLocationHandler(){
+  async function getCity(){
+    const apiCall = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fd084915b60c86f45f8b8fd3eb523290`
+    const response = await fetch(apiCall);
+    const data = await response.json();
+    if (!response.ok){
+        Alert.alert('City not found');
+    } 
+    setWeatherDescription(data.weather[0].description);
+    setTemperature(Math.round(data.main.temp-273.15))
+    setMinimalTemperature(Math.round(data.main.temp_min-273.15))
+    setMaximalTemperature(Math.round(data.main.temp_max-273.15))
+    setCity(data.name)
+    setSunrise(data.sys.sunrise * 1000)
+    setSunset(data.sys.sunset * 1000)
+    setWeatherIcon(data.weather[0].icon);
+    setIsVisible(true)
+  }
+  async function getLocation(){
     const hasPermission = await veryfiPermissions();
     if(!hasPermission) {
       return;
@@ -64,7 +81,11 @@ function LocationPicker(){
     return(
         <View >
           <View>
-            <MaterialCommunityIcons name="crosshairs-gps" size={24} color="black" onPress={getLocationHandler}/>
+            <TextInput placeholder='Search city' onChangeText={setCity}></TextInput>
+            <Button onPress={getCity} title='Enter'/>
+          </View>
+          <View>
+            <MaterialCommunityIcons name="crosshairs-gps" size={24} color="black" onPress={getLocation}/>
           </View>
           {isVisible ? (
           <View>
